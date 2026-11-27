@@ -1,0 +1,22 @@
+name: Generate ASCII Artwork
+
+on: [push,fork]
+
+jobs:
+    ascii_job:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v7
+          - name: install cowsay
+            run: sudo apt-get install -y cowsay
+          - name: execute cowsay command
+            run:  cowsay -f dragon "Hello from GitHub Actions!" >> dragon.txt  
+          - name: read the output file and list files
+            run:  |
+                grep -i "dragon" dragon.txt
+                cat dragon.txt
+                ls -ltra
+          
+                
+            
