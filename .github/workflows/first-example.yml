@@ -8,9 +8,10 @@ jobs:
         steps:
           - name: Checkout Code
             uses: actions/checkout@v7
-          - name: Welcome Message
-            run: echo "Welcome to First run of Github Action Workflow"
-          - name: list files
-            run: ls
-          - name: Read Files
-            run: cat README.md
+          - name: Directory Listing and File Content
+            run:  echo "Welcome to First run of Github Action Workflow"
+                  ls -ltra
+                  cat README.md
+                  cat index.html
+          - name: Generate ASCII artwork
+            run:  cowsay -f dragon "Hello from GitHub Actions!" >> dragon.txt
