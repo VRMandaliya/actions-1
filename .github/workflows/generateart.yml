@@ -40,5 +40,7 @@ jobs:
             with:
                 name: dragon-artifact
                 path: .
-          - name: Deploy the ASCII artwork
-            run:  echo "Deploying the ASCII artwork from dragon.txt"
+          - name: Read the ASCII artwork
+            run:  |                
+                cat dragon.txt
+                echo "Reading the ASCII artwork from dragon.txt"
