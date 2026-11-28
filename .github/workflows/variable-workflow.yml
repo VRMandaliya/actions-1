@@ -1,0 +1,43 @@
+name: Variable Workflow
+
+on: [push]
+env:
+    CONTAINER_REGISTRY: docker.io
+    DOCKER_USERNAME: vimanda
+    IMAGE_NAME: github-actions-nginx
+
+jobs:
+    docker_build_and_push:
+        runs-on: ubuntu-latest
+        steps:
+
+            - name: Docker build
+              run: |
+                    echo "Building Docker image..."
+                    docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest .
+
+            - name : docker login
+              env: 
+                 DOCKER_PASSWORD: dckr_pat_QUupK4W3FVIqm-GU9IjhhXeqKE8
+
+              run: 
+                 echo $DOCKER_PASSWORD | docker login ${{ env.CONTAINER_REGISTRY }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
+
+            - name: Docker push
+              run: |  
+                    echo "Pushing Docker image to registry..."
+                    docker push ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+  
+    deploy_docker:
+        needs: docker_build_and_push
+        runs-on: ubuntu-latest
+        steps:
+            - name: Docker pull
+              run: |
+                    echo "Pulling Docker image from registry..."
+                    docker pull ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+
+            - name: Docker run
+              run: |
+                    echo "Running Docker container..."
+                    docker run -d -p 8080:80 ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
