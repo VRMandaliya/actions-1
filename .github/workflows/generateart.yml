@@ -8,15 +8,10 @@ jobs:
         steps:
           - name: Checkout Repository
             uses: actions/checkout@v7
-          - name: install cowsay
-            run: sudo apt-get install -y cowsay
-          - name: execute cowsay command
-            run:  cowsay -f dragon "Hello from GitHub Actions! and you are dragon" >> dragon.txt  
-          - name: read the output file and list files
+          - name: Directory Listing and File Content
+            run:  ls -ltra
+          - name: execute ascii.sh script
             run:  |
-                grep -i "dragon" dragon.txt
-                cat dragon.txt
-                ls -ltra
-          
-                
+                chmod +x ascii.sh
+                ./ascii.sh
             
