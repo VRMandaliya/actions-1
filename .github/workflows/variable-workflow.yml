@@ -20,11 +20,8 @@ jobs:
                     docker build -t ${{ env.CONTAINER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest .
 
             - name : docker login
-              env: 
-                 DOCKER_PASSWORD: dckr_pat_QUupK4W3FVIqm-GU9IjhhXeqKE8
-
               run: 
-                 echo $DOCKER_PASSWORD | docker login ${{ env.CONTAINER_REGISTRY }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
+                 echo ${{ secrets.DOCKER_PASSWORD }} | docker login ${{ env.CONTAINER_REGISTRY }} -u ${{ env.DOCKER_USERNAME }} --password-stdin
 
             - name: Docker push
               run: |  
