@@ -10,14 +10,20 @@ jobs:
             run:  |
                 sudo apt-get install -y cowsay
                 cowsay -f dragon "Hello from GitHub Actions! and you are dragon" >> dragon.txt  
-          - name: Sleep for 10 seconds
-            run:  sleep 10     
+          - name: upload artifact
+            uses: actions/upload-artifact@v3
+            with:
+                name: dragon-artifact
+                path: dragon.txt
     test_job_2:
         needs: build_job_1
         runs-on: ubuntu-latest
         steps:
-          - name:  Sleep for 10 seconds
-            run:  sleep 10
+          - name:  Download the artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: dragon-artifact
+                path: .
           - name: test if file dragon.txt exists
             run:  |
                 if [ -f dragon.txt ]; then
@@ -29,7 +35,10 @@ jobs:
         needs: [build_job_1, test_job_2]
         runs-on: ubuntu-latest
         steps:
-          - name: Sleep for 10 seconds
-            run:  sleep 10
+          - name: Download the artifact
+            uses: actions/download-artifact@v3
+            with:
+                name: dragon-artifact
+                path: .
           - name: Deploy the ASCII artwork
             run:  echo "Deploying the ASCII artwork from dragon.txt"
